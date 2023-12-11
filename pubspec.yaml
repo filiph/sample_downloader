@@ -1,7 +1,7 @@
 name: sample_downloader
 description: An command line tool for downloading Flutter projects from GitHub.
 version: 0.1.0
-# repository: https://github.com/my_org/my_repo
+repository: https://github.com/filiph/sample_downloader
 
 environment:
   sdk: ^3.1.5
