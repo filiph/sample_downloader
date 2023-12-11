@@ -124,8 +124,11 @@ void main(List<String> args) async {
       await doWork('Fetching', github.repositories.getContents(repo, '/'));
   assert(rootContents.isDirectory);
 
-  var projects = await doWork('Searching for samples',
-      getPubspecDirectories(github, repo, maxDepth: maxDepth).toList());
+  var projects = await doWork(
+      'Searching for samples',
+      getPubspecDirectories(github, repo, maxDepth: maxDepth)
+          .where((path) => path != '/')
+          .toList());
 
   logger.stdout('Found ${projects.length} projects.');
   projects.sort();
