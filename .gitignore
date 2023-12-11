@@ -1,3 +1,8 @@
 # https://dart.dev/guides/libraries/private-files
 # Created by `dart pub`
 .dart_tool/
+
+# Machine-specific files.
+.DS_Store
+.idea/
+sample_downloader.iml
