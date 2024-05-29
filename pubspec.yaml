@@ -6,7 +6,6 @@ repository: https://github.com/filiph/sample_downloader
 environment:
   sdk: ^3.1.5
 
-# Add regular dependencies here.
 dependencies:
   archive: ^3.4.9
   args: ^2.4.2

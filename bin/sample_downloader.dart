@@ -216,15 +216,15 @@ void main(List<String> args) async {
 
   // This work is synchronous but we still want to show at least some
   // 'progress' indication. Later, this could be done in an isolate.
-  var decodeProgress = logger.progress('Reading');
+  var decompressProgress = logger.progress('Decompressing');
   var archive = ZipDecoder().decodeBuffer(zipInput, verify: true);
-  decodeProgress.finish(showTiming: true);
+  decompressProgress.finish(showTiming: true);
 
   var archiveNamePrefix = archive.fileName(0);
   logger.trace('Archive name: $archiveNamePrefix.');
   var projectFilePrefix = '$archiveNamePrefix$projectPath/';
 
-  var decompressProgress = logger.progress('Decompressing');
+  var writeProgress = logger.progress('Writing to disk');
   for (var zippedFile in archive) {
     if (!zippedFile.name.startsWith(projectFilePrefix)) {
       continue;
@@ -246,7 +246,7 @@ void main(List<String> args) async {
     var outputFile = OutputFileStream(outputPath);
     zippedFile.writeContent(outputFile);
   }
-  decompressProgress.finish(showTiming: true);
+  writeProgress.finish(showTiming: true);
 
   logger.stdout('\nProject generated in '
       '${logger.ansi.emphasized(directoryPath)}.');
