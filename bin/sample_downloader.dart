@@ -78,7 +78,16 @@ void main(List<String> args) async {
 
   String emphasized(String message) => logger.ansi.emphasized(message);
 
-  String subtle(String message) => logger.ansi.subtle(message);
+  String subtle(String message) {
+    // Experimentation showed that `logger.ansi.subtle` doesn't work on many
+    // terminals (it's basically invisible). Using the gray from `pub`.
+    // https://github.com/dart-lang/pub/blob/master/lib/src/log.dart#L56
+    const gray = '\u001b[38;5;245m';
+    if (logger.ansi.useAnsi) {
+      return '$gray$message${logger.ansi.none}';
+    }
+    return message;
+  }
 
   logger.stdout('\nWelcome to ${emphasized('sample_downloader')}.');
   logger
