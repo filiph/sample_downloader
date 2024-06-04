@@ -1,3 +1,8 @@
+## 0.1.4
+
+- Another attempt to fix colors, this time using the ANSI code
+  that the `pub` tool uses
+
 ## 0.1.3
 
 - Fix colors so that the CLI colors work well on Ubuntu
