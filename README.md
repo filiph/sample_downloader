@@ -5,9 +5,6 @@ from GitHub repositories.
 
 ![Screencast of the CLI tool in action](https://raw.githubusercontent.com/filiph/sample_downloader/main/doc/sample_downloader_demo.gif)
 
-**NOTE:** This is an experimental project by a single developer.
-I cannot guarantee any level of support at this point.
-
 
 ## Installation
 
