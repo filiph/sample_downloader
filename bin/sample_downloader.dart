@@ -51,7 +51,8 @@ void main(List<String> args) async {
     logger.stdout(r"    $ sample_downloader");
     logger.stdout("\nOptions:");
     logger.stdout(parser.usage);
-    exit(2);
+    // Do not set error code when help is what the user wanted.
+    return;
   }
 
   /// Convenience function that shows a progress indicator while
