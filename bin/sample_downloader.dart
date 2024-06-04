@@ -37,7 +37,22 @@ void main(List<String> args) async {
   );
   parser.addFlag('help', abbr: '?', help: "Shows this help.", negatable: false);
 
-  var results = parser.parse(args);
+  String getUsage() => "Usage:\n"
+      "    \$ sample_downloader\n"
+      "\n"
+      "Options:\n"
+      "${parser.usage}\n";
+
+  ArgResults results;
+  try {
+    results = parser.parse(args);
+  } on ArgParserException catch (e) {
+    stderr.writeln("Wrong usage: $e");
+
+    stdout.write('\n');
+    stdout.write(getUsage());
+    exit(2);
+  }
 
   var help = results['help'] as bool;
   var verbose = results['verbose'] as bool;
@@ -47,10 +62,7 @@ void main(List<String> args) async {
   var logger = verbose ? cli.Logger.verbose() : cli.Logger.standard();
 
   if (help) {
-    logger.stdout("Usage:");
-    logger.stdout(r"    $ sample_downloader");
-    logger.stdout("\nOptions:");
-    logger.stdout(parser.usage);
+    logger.stdout(getUsage());
     // Do not set error code when help is what the user wanted.
     return;
   }
