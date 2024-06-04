@@ -63,17 +63,18 @@ void main(List<String> args) async {
     return result;
   }
 
-  String subtle(String message) =>
-      '${logger.ansi.blue}$message${logger.ansi.none}';
+  String emphasized(String message) => logger.ansi.emphasized(message);
 
-  logger.stdout('\nWelcome to ${logger.ansi.emphasized('sample_downloader')}.');
+  String subtle(String message) => logger.ansi.subtle(message);
+
+  logger.stdout('\nWelcome to ${emphasized('sample_downloader')}.');
   logger
       .stdout(subtle('This tool uses the GitHub API to find and download Dart\n'
           'and Flutter samples. The API is rate-limited, so it is recommended\n'
           "that you select 'Yes' below. Otherwise, the tool might fail after\n"
           'some time.\n'));
-  logger.stdout(logger.ansi
-      .emphasized("Do you want to use your environment's GitHub credentials?"));
+  logger.stdout(
+      emphasized("Do you want to use your environment's GitHub credentials?"));
   logger
       .stdout(subtle("If you're using git from the command line, you probably\n"
           "have the credentials set up."));
@@ -97,8 +98,8 @@ void main(List<String> args) async {
   if (repos.length == 1) {
     repoFullName = repos.single;
   } else {
-    logger.stdout(logger.ansi
-        .emphasized("\nSelect repository from which to download a sample:"));
+    logger.stdout(
+        emphasized("\nSelect repository from which to download a sample:"));
     var menu = Menu(repos);
     var repoChoice = menu.choose();
     repoFullName = repoChoice.value;
@@ -106,14 +107,14 @@ void main(List<String> args) async {
 
   var repo = RepositorySlug.full(repoFullName);
 
-  logger.stdout("\nLooking at ${logger.ansi.emphasized(repo.fullName)}.");
+  logger.stdout("\nLooking at ${emphasized(repo.fullName)}.");
 
   String defaultRef;
   try {
-    defaultRef = (await doWork(
-            'Getting default branch', github.repositories.getRepository(repo)))
+    defaultRef = (await doWork('  Getting default branch',
+            github.repositories.getRepository(repo)))
         .defaultBranch;
-    logger.trace('Default branch is $defaultRef.');
+    logger.trace('  Default branch is $defaultRef.');
   } on RepositoryNotFound {
     logger.stderr("Repository '${repo.fullName}' not found.");
     github.dispose();
@@ -121,19 +122,19 @@ void main(List<String> args) async {
   }
 
   var rootContents =
-      await doWork('Fetching', github.repositories.getContents(repo, '/'));
+      await doWork('  Fetching', github.repositories.getContents(repo, '/'));
   assert(rootContents.isDirectory);
 
   var projects = await doWork(
-      'Searching for samples',
+      '  Searching for samples',
       getPubspecDirectories(github, repo, maxDepth: maxDepth)
           .where((path) => path != '/')
           .toList());
 
-  logger.stdout('Found ${projects.length} projects.');
+  logger.stdout('  Found ${projects.length} projects.');
   projects.sort();
 
-  logger.stdout(logger.ansi.emphasized('\nChoose sample:'));
+  logger.stdout(emphasized('\nChoose sample:'));
 
   String projectPath;
 
@@ -145,13 +146,13 @@ void main(List<String> args) async {
 
   final sampleName = projectPath.split('/').last;
 
-  logger.stdout("\nSelected ${logger.ansi.emphasized(sampleName)}.");
+  logger.stdout("\nSelected ${emphasized(sampleName)}.");
 
   var defaultDirectoryName = '${repo.owner}-${repo.name}-$sampleName';
   String? directoryPath;
 
   while (directoryPath == null) {
-    logger.stdout("\n${logger.ansi.emphasized('Enter name of new directory')} "
+    logger.stdout("\n${emphasized('Enter name of new directory')} "
         "${subtle('(ENTER for ')}"
         "$defaultDirectoryName"
         "${subtle('):')}");
@@ -171,14 +172,14 @@ void main(List<String> args) async {
     }
 
     logger.trace('Creating directory '
-        '${logger.ansi.emphasized(directory.path)}.');
+        '${emphasized(directory.path)}.');
     logger.trace('Absolute path: ${directory.absolute.path}');
     try {
       var created = await doWork('Creating', directory.create());
       directoryPath = created.path;
 
       logger.stdout("Created directory "
-          "${logger.ansi.emphasized(directory.path)} "
+          "${emphasized(directory.path)} "
           "in "
           "${Directory.current.path}.");
     } on IOException catch (e) {
@@ -249,7 +250,7 @@ void main(List<String> args) async {
   writeProgress.finish(showTiming: true);
 
   logger.stdout('\nProject generated in '
-      '${logger.ansi.emphasized(directoryPath)}.');
+      '${emphasized(directoryPath)}.');
   logger.stdout(
     subtle('\nTo run the project:\n\n'
         '  cd $directoryPath\n'
